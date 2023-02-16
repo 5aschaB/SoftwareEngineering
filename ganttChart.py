@@ -73,18 +73,3 @@ class GanttChart:
 					return False
 		#Topologically sorts the cycles so that a cycles' predecessors occur before it, if possible
 		return topOrd.topologicalOrderingCycles(self,debug)
-
-p1=subprocessClass.Subprocess(0,[],{0:0.1,1:0.2,2:0.3,3:0.4})
-p2=subprocessClass.Subprocess(1,[0],{0:0.1,1:0.2,2:0.3,3:0.4})
-p3=subprocessClass.Subprocess(2,[0],{0:0.1,1:0.2,2:0.3,3:0.4})
-p4=subprocessClass.Subprocess(3,[1,2],{0:0.1,1:0.2,2:0.3,3:0.4})
-c1=cycle.Cycle(0,[],[p1,p2,p3,p4],{1:1})
-
-p5=subprocessClass.Subprocess(4,[],{0:0.1,1:0.2,2:0.3,3:0.4})
-p6=subprocessClass.Subprocess(5,[7,4],{0:0.1,1:0.2,2:0.3,3:0.4})
-p7=subprocessClass.Subprocess(6,[],{0:0.1,1:0.2,2:0.3,3:0.4})
-p8=subprocessClass.Subprocess(7,[6],{0:0.1,1:0.2,2:0.3,3:0.4})
-c2=cycle.Cycle(1,[0],[p5,p6,p7,p8],{1:1})
-
-GC=GanttChart(0,[c1,c2])
-print(GC.checkCycles(True))
