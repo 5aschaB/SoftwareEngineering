@@ -20,7 +20,8 @@ export const Sidebar = () => {
           </div>
           <hr />
           <div className="center">
-              <ul>
+        <ul>
+          
           <p className="title">MAIN</p>
           <Link to="/" style={{ textDecoration: "none" }}>
              <li> <DashboardIcon className="icon"/> <span>Dashboard</span></li>
