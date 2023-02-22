@@ -1,2 +1,4 @@
 Document any major changes/deviations from the design/requirements analysis here
 
+Sascha - Changed the risk metrics to be score from 1 to 10 instead of 1 to 5, to better reflect the survey results
+(since survey responses are 1 to 10) and the percentages supplied by the Gantt chart
