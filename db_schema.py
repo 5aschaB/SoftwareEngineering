@@ -1,5 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
+from sqlalchemy.orm import sessionmaker
+import pytest
 
 # create the database interface
 db = SQLAlchemy()
@@ -28,21 +32,19 @@ class UserAccountTable(UserMixin, db.Model):
         self.roleType=roleType
 
 
-# a model of a bill for the database
-# it refers to a user and a category
+# a model of project metics for the database
 class projectMetricsTable(db.Model):
     __tablename__='project_metrics_table'
     projectid = db.Column(db.Integer, primary_key=True)
-    budget = db.Column(db.Integer)
+    budget = db.Column(db.Integer, db.CheckConstraint('budget>1 AND budget<11'))
     deadline = db.Column(db.DateTime)
-    completeness = db.Column(db.Integer)
-    teamSize = db.Column(db.Integer)
-    teamMorale = db.Column(db.Integer)
-    teamWellness = db.Column(db.Integer)
-    userid = db.Column(db.Integer, db.ForeignKey('user_account_table.id'))
+    completeness = db.Column(db.Integer, db.CheckConstraint('completeness>1 AND completeness<11'))
+    teamSize = db.Column(db.Integer, db.CheckConstraint('teamSize>1 AND teamSize<11'))
+    teamMorale = db.Column(db.Integer, db.CheckConstraint('teamMorale>1 AND teamMorale<11'))
+    teamWellness = db.Column(db.Integer, db.CheckConstraint('teamWellness>1 AND teamWellness<11'))
+    userid = db.Column(db.Integer, db.ForeignKey('user_account_table.userid'))
 
-    def __init__(self, projectid, budget, deadline, completeness, teamSize, teamMorale, teamWellness, userid):
-        self.projectid=projectid
+    def __init__(self, budget, deadline, completeness, teamSize, teamMorale, teamWellness, userid):
         self.budget=budget
         self.deadline=deadline
         self.completeness=completeness
@@ -51,13 +53,12 @@ class projectMetricsTable(db.Model):
         self.teamWellness=teamWellness
         self.userid=userid
 
-# a model of a bill item for the database
-# it refers to a bill
+# a model of subprocesses for the database
 class subprocessTable(db.Model):
     __tablename__='subprocess_table'
     subprocessid = db.Column(db.Integer, primary_key=True)
     subprocessName = db.Column(db.String(100))
-    cycleid = db.Column(db.Integer, db.ForeignKey('cycle_table'))
+    cycleid = db.Column(db.Integer, db.ForeignKey('cycle_table.cycleid'))
     employeesRequired = db.Column(db.Integer, nullable=False)
     costPerUnitTime = db.Column(db.Float)
     completeness = db.Column(db.Integer)
@@ -69,20 +70,21 @@ class subprocessTable(db.Model):
         self.costPerUnitTime=costPerUnitTime
         self.completeness=completeness
 
-# a model of a notification for the database
+# a model of a cycle for the database
 class cycleTable(db.Model):
     __tablename__='cycle_table'
     cycleid = db.Column(db.Integer, primary_key=True)
     cycleRepeats = db.Column(db.Integer)
-    projectid = db.Column(db.Integer, db.ForeignKey('project_metrics_table'))
+    projectid = db.Column(db.Integer, db.ForeignKey('project_metrics_table.projectid'))
 
     def __init__(self, cycleRepeats, projectid):
         self.cycleRepeats=cycleRepeats
         self.projectid=projectid
 
+# a model of probabilities for the database
 class probabilitiesTable(db.Model):
     __tablename__='probabilities_table'
-    subprocessid = db.Column(db.Integer, db.ForeignKey('subprocess_table'))
+    subprocessid = db.Column(db.Integer, db.ForeignKey('subprocess_table.subprocessid'))
     timeframe = db.Column(db.Integer, nullable=False)
     probability = db.Column(db.Float, nullable=False)
 
@@ -91,11 +93,13 @@ class probabilitiesTable(db.Model):
         self.timeframe=timeframe
         self.probability=probability
 
+# a model of a subprocess's predecessor for the database
 class subprocessPredecessorTable(db.Model):
     __tablename__='subprocess_predecessor_table'
     subprocessBefore = db.Column(db.Integer, primary_key=True)
     subprocessAfter = db.Column(db.Integer, primary_key=True)
 
+# a model of a cycle's predecessor for the database
 class cyclePredecessorTable(db.Model):
     __tablename__='cycle_predecessor_table'
     cycleBefore = db.Column(db.Integer, primary_key=True)
