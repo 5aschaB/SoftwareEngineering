@@ -1,5 +1,9 @@
 import "./featured.scss"
-import { CircularProgressbar } from "react-circular-progressbar";
+
+import {
+  CircularProgressbar,
+  buildStyles
+} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 export const Featured = () => {
@@ -11,7 +15,11 @@ export const Featured = () => {
           <div className="bottom">
               <div className="featuredChart">
                   {/* insert progress bar of metrics here, strokwwidth changes size of bars */}
-                  <CircularProgressbar value={70} text={"70%"} strokeWidth={5} />
+          <CircularProgressbar value={70} text={"70%"} strokeWidth={10} styles={buildStyles({
+          textColor: "grey",
+          pathColor: "#fc4a28",
+          // trailColor: "gold"
+        })}  />
                   
               </div>
               <p className="title"> Deadline</p>

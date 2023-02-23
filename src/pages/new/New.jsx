@@ -21,14 +21,67 @@ export const New = () => {
 
                 <div className="bottom">
                     <div className="left">
-                        How happy are you working on your project 
-                    </div>
+              How happy are you working on your project 
+            </div>
+            <br></br>
                     <div className="right">
                         <div className="survey">
                             <Survey/>
                         </div>
-                  </div>
-               </div>
+            </div>
+          </div>
+          
+
+
+
+
+           <div className="bottom">
+                    <div className="left">
+              How much does working on this project affect your personal time? 
+            </div>
+            <br></br>
+                    <div className="right">
+                        <div className="survey">
+                            <Survey/>
+                        </div>
+            </div>
+          </div>
+          
+
+
+
+
+           <div className="bottom">
+                    <div className="left">
+              How stressed are you regarding this project? 
+            </div>
+            <br></br>
+                    <div className="right">
+                        <div className="survey">
+                            <Survey/>
+                        </div>
+            </div>
+          </div>
+          
+
+
+
+
+           <div className="bottom">
+                    <div className="left">
+              How happy are you with your team?
+            </div>
+            <br></br>
+                    <div className="right">
+                        <div className="survey">
+                            <Survey/>
+                        </div>
+            </div>
+          </div>
+          
+
+
+
           </div>
     </div>
   )

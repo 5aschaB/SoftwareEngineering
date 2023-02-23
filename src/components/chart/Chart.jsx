@@ -2,8 +2,6 @@ import "./chart.scss"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
-
-
 const data = [
   { name: "January", Total: 1200 },
   { name: "February", Total: 2100 },
@@ -18,8 +16,6 @@ const data = [
   { name: "November", Total: 1200 },
   { name: "December", Total: 1000 },
 ];
-
-
 
 export const Chart = () => {
   return ( 
@@ -42,7 +38,7 @@ export const Chart = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="Total" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="Total" stroke="#fc4a28" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

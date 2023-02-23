@@ -7,15 +7,19 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
+import { DarkModeContext } from "../../context/darkModeContext";
+import { useContext } from "react";
 
 export const Sidebar = () => {
+      const { dispatch } = useContext(DarkModeContext);
+
   return (
       <div className='sidebar'>          
            
       <div className="top">
         <Link to="/" style={{textDecoration:"none"}}>
-          <span className="logo"> lamabama </span>
+          <span className="logo"> Company X </span>
           </Link>
           </div>
           <hr />
@@ -28,10 +32,17 @@ export const Sidebar = () => {
                   </Link>
                  
           <li><AssignmentOutlinedIcon className="icon" /><span>Projects</span></li>
-          <Link to="/survey" style={{ textDecoration: "none" }}>
-                  <li><ChatBubbleOutlineOutlinedIcon className="icon" /><span>Chatbot</span></li>
+
+          <Link to="/chatbot" style={{ textDecoration: "none" }}>
+              <li><ChatBubbleOutlineOutlinedIcon className="icon" /><span>Chatbot</span></li>
           </Link>
+                 
+
+
+          <Link to="/survey" style={{ textDecoration: "none" }}>
                   <li><PollOutlinedIcon className="icon" /><span>Survey</span></li>
+          </Link>
+
                   <p className="title">USER</p>
                   <li><SettingsOutlinedIcon className="icon"/><span>Settings</span></li>
                   <li><AccountCircleOutlinedIcon className="icon"/><span>Profile</span></li>
@@ -41,11 +52,9 @@ export const Sidebar = () => {
 
           <div className="bottom">
           
-         <div className="colorOption"> </div>
-          <div className="colorOption"> </div>
-           <div className="colorOption"> </div>
-          
-          
+         <div className="colorOption" onClick={()=>dispatch({type:"LIGHT"})}> </div>
+
+                  
           </div>
    
         </div>

@@ -6,12 +6,18 @@ import { Widget } from '../../components/widget/Widget'
 import { Chart } from '../../components/chart/Chart'
 import Table from "../../components/table/Table";
 import "./home.scss"
+import ChatBot from 'react-simple-chatbot';
+
 import Survey from '../../components/survey/Survey'
+import { Segment } from 'semantic-ui-react'
 
 const Home = () => {
+
   return (
+
+
+
       <div className='home'>
-        
           <Sidebar/>
       <div className="homeContainer">
         <Navbar />

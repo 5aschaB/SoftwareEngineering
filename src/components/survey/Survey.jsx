@@ -20,7 +20,10 @@ export const Survey = () => {
               
               
     <input type="submit" value="Submit" />
-    </form>
+      </form>
+      
+
+      
       </div>
       
   )
