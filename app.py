@@ -12,7 +12,7 @@ from sqlalchemy import text
 app = Flask(__name__)
 
 # select the database filename
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///todo.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///database.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '\xda88y\xd8\xb6\x9d\xd3%\xf1\x99^\x12,\x11u\xc7\xb2\xe0\xe18\x97\xf6\x95'
 
@@ -39,7 +39,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-#route to the home
+""" #route to the home
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -70,7 +70,7 @@ def list():
             if item.bill_id == bill.id:
                 sum = sum + item.balance
         bill.total = sum
-    return render_template('list.html', bills=bills, items=items, users=users, notifs=notifs)
+    return render_template('list.html', bills=bills, items=items, users=users, notifs=notifs) """
 
 #route to create a new list
 @app.route('/newbill', methods=['GET','POST'])
@@ -149,7 +149,7 @@ def logout():
         logout_user()
         return redirect('/')
 
-#route to create a new item and send notification to user
+""" #route to create a new item and send notification to user
 @app.route('/newitem', methods=['GET','POST'])
 def newItem():
     if request.method=="POST":
@@ -263,4 +263,4 @@ def completeNotif():
             db.session.delete(notif)                # when comfirmation notification ticked by creator, it is just deleted as it has a status of True already
             db.session.commit()
         
-        return jsonify({'complete': notif.complete, 'id' : id})
+        return jsonify({'complete': notif.complete, 'id' : id}) """
