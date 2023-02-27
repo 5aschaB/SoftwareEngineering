@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '\xda88y\xd8\xb6\x9d\xd3%\xf1\x99^\x12,\x11u\xc7\xb2\xe0\xe18\x97\xf6\x95'
 
 # set up a 'model' for the data you want to store
-from db_schema import db, User, Bills, BillItems, Notifications, dbinit
+from db_schema import db, UserAccountTable, projectMetricsTable, subprocessTable, cycleTable, probabilitiesTable, subprocessPredecessorTable, cyclePredecessorTable, dbinit
 
 # init the database so it can connect with our app
 db.init_app(app)
@@ -36,8 +36,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def load_user(userid):
+    return UserAccountTable.query.get(int(userid))
 
 """ #route to the home
 @app.route('/')
@@ -72,7 +72,7 @@ def list():
         bill.total = sum
     return render_template('list.html', bills=bills, items=items, users=users, notifs=notifs) """
 
-#route to create a new list
+""" #route to create a new list
 @app.route('/newbill', methods=['GET','POST'])
 def newBill():
     if request.method=="POST":
@@ -80,7 +80,7 @@ def newBill():
 
         db.session.add(Bills(billname,False,0,current_user.id))     # creates new bill row in database
         db.session.commit()
-        return redirect('list.html')
+        return redirect('list.html') """
 
 #route to login request
 @app.route('/login', methods=['GET','POST'])
@@ -93,7 +93,7 @@ def loginRequest():
         password=request.form['password']
 
         #find the users with this name
-        user = User.query.filter_by(name=name).first()
+        user = UserAccountTable.query.filter_by(name=name).first()
         if not user:                                                # flashes message to user if username or password is incorrect
             flash("Incorrect username/password")
             return redirect('login.html')
@@ -120,16 +120,16 @@ def registration():
         email=request.form['email']
 
         #find the users with this name to check if name already exists
-        user = User.query.filter_by(name=name).first()
+        user = UserAccountTable.query.filter_by(name=name).first()
         if user:
             return redirect('register.html')
 
         #find the users with this email to check if email has already been used
-        email = User.query.filter_by(email=email).first()
+        email = UserAccountTable.query.filter_by(email=email).first()
         if email:
             return redirect('register.html')
             
-        new_user = User(name=name, password=generate_password_hash(password), email=email)
+        new_user = UserAccountTable(name=name, password=generate_password_hash(password), email=email)
         
         #add new user to database
         db.session.add(new_user)
