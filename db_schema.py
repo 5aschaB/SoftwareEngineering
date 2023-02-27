@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker
 import pytest
+import datetime
 
 # create the database interface
 db = SQLAlchemy()
@@ -14,19 +15,19 @@ class UserAccountTable(UserMixin, db.Model):
     userid = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100))
     passwordHash = db.Column(db.String(250))
-    confirmationToken = db.Column(db.String(100))
-    tokenGenerationTime = db.Column(db.DateTime)
+    tokenGenerationTime = db.Column(db.DateTime, nullable=False)
     emailVerificationStatus = db.Column(db.Boolean, default=False)
+    emailVerifiedTime = db.Column(db.DateTime)
     passwordRecoveryToken = db.Column(db.String(100))
     recoveryTokenTime = db.Column(db.DateTime)
     roleType = db.Column(db.String(15))
 
-    def __init__(self, email, passwordHash, confirmationToken, tokenGenerationTime, emailVerificationStatus, passwordRecoveryToken, recoveryTokenTime, roleType):
+    def __init__(self, email, passwordHash, tokenGenerationTime, emailVerificationStatus, emailVerifiedTime, passwordRecoveryToken, recoveryTokenTime, roleType):
         self.email=email
         self.passwordHash=passwordHash
-        self.confirmationToken=confirmationToken
         self.tokenGenerationTime=tokenGenerationTime
         self.emailVerificationStatus=emailVerificationStatus
+        self.emailVerifiedTime=emailVerifiedTime
         self.passwordRecoveryToken=passwordRecoveryToken
         self.recoveryTokenTime=recoveryTokenTime
         self.roleType=roleType

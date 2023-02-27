@@ -9,12 +9,16 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import text
 
+from email_token import generate_confirmation_token, confirm_token
+import datetime
+
 app = Flask(__name__)
 
 # select the database filename
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///database.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '\xda88y\xd8\xb6\x9d\xd3%\xf1\x99^\x12,\x11u\xc7\xb2\xe0\xe18\x97\xf6\x95'
+app.config['SECURITY_PASSWORD_SALT'] = 'il0ves3cur1ty'
 
 # set up a 'model' for the data you want to store
 from db_schema import db, UserAccountTable, projectMetricsTable, subprocessTable, cycleTable, probabilitiesTable, subprocessPredecessorTable, cyclePredecessorTable, dbinit
@@ -89,11 +93,11 @@ def loginRequest():
         return redirect('/')
     
     if request.method=="POST":
-        name=request.form['username']
+        email=request.form['email']
         password=request.form['password']
 
         #find the users with this name
-        user = UserAccountTable.query.filter_by(name=name).first()
+        user = UserAccountTable.query.filter_by(email=email).first()
         if not user:                                                # flashes message to user if username or password is incorrect
             flash("Incorrect username/password")
             return redirect('login.html')
@@ -114,32 +118,64 @@ def registration():
         return redirect('/')
     
     if request.method=="POST":
-        name=request.form['username']
+        # name=request.form['username']
+        email=request.form['email']
         password=request.form['password']
         password2=request.form['password2']
-        email=request.form['email']
+        roleType=request.form['roletype']
 
-        #find the users with this name to check if name already exists
+        """ #find the users with this name to check if name already exists
         user = UserAccountTable.query.filter_by(name=name).first()
         if user:
-            return redirect('register.html')
+            return redirect('register.html') """
 
         #find the users with this email to check if email has already been used
         email = UserAccountTable.query.filter_by(email=email).first()
         if email:
-            return redirect('register.html')
+            # return redirect('register.html')
+            return jsonify({"Error": "User already exists"})
+        
+        if password != password2:
+            return jsonify({"Error": "Password doesn't match with password confirmation"})
             
-        new_user = UserAccountTable(name=name, password=generate_password_hash(password), email=email)
+        new_user = UserAccountTable(email=email,
+                                    passwordHash=generate_password_hash(password),
+                                    tokenGenerationTime=datetime.datetime.now(),
+                                    emailVerificationStatus=False,
+                                    emailVerifiedTime=None,
+                                    passwordRecoveryToken=None,
+                                    recoveryTokenTime=None,
+                                    roleType=roleType)
         
         #add new user to database
         db.session.add(new_user)
         db.session.commit()
 
+        token = generate_confirmation_token(new_user.email)
+
         login_user(new_user)        # logs user in straight after registering
-        return redirect('list.html')
+        # return redirect('list.html')
+        return jsonify({"Success": "User created"})
 
     if request.method=="GET":
         return render_template('login.html')
+    
+@app.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'error')
+    user = UserAccountTable.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.emailVerificationStatus = True
+        user.emailVerifiedTime = datetime.datetime.now()
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect('/')
 
 #route for logging out
 @app.route('/logout')
