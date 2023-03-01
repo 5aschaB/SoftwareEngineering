@@ -43,15 +43,17 @@ class projectMetricsTable(db.Model):
     teamSize = db.Column(db.Integer, db.CheckConstraint('teamSize>1 AND teamSize<11'))
     teamMorale = db.Column(db.Integer, db.CheckConstraint('teamMorale>1 AND teamMorale<11'))
     teamWellness = db.Column(db.Integer, db.CheckConstraint('teamWellness>1 AND teamWellness<11'))
+    timeframe = db.Column(db.Integer)
     userid = db.Column(db.Integer, db.ForeignKey('user_account_table.userid'))
 
-    def __init__(self, budget, deadline, completeness, teamSize, teamMorale, teamWellness, userid):
+    def __init__(self, budget, deadline, completeness, teamSize, teamMorale, teamWellness, timeframe, userid):
         self.budget=budget
         self.deadline=deadline
         self.completeness=completeness
         self.teamSize=teamSize
         self.teamMorale=teamMorale
         self.teamWellness=teamWellness
+        self.timeframe=timeframe
         self.userid=userid
 
 # a model of subprocesses for the database
@@ -105,6 +107,13 @@ class cyclePredecessorTable(db.Model):
     __tablename__='cycle_predecessor_table'
     cycleBefore = db.Column(db.Integer, primary_key=True)
     cycleAfter = db.Column(db.Integer, primary_key=True)
+
+class gitCommitsTable(db.Model):
+    __tablename__='git_commits_table'
+    commitid = db.Column(db.Integer, primary_key=True)
+    projectid = db.Column(db.Integer, db.ForeignKey('project_metrics_table.projectid'))
+    timeframe = db.Column(db.Integer, db.ForeignKey('project_metrics_table.timeframe'))
+    numOfCommits = db.Column(db.Integer)
 
 """ # put some data into the tables
 def dbinit():
