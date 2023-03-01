@@ -1,7 +1,8 @@
 flask
-flask_sqlalchemy
-flask_login
+flask-sqlalchemy
+flask-login
 werkzeug
 datetime
 flask
 itsdangerous
+flask-mail

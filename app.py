@@ -4,12 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 # create the Flask app
-from flask import Flask, make_response, redirect, render_template, request, flash, jsonify
+from flask import Flask, make_response, redirect, render_template, request, flash, jsonify, url_for
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import text
 
 from email_token import generate_confirmation_token, confirm_token
+from sendEmail import send_email
 import datetime
 
 app = Flask(__name__)
@@ -152,8 +153,14 @@ def registration():
         db.session.commit()
 
         token = generate_confirmation_token(new_user.email)
+        confirm_url = url_for('user.confirm_email', token=token, _external=True)
+        html = render_template('user/activate.html', confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        send_email(new_user.email, subject, html)
 
         login_user(new_user)        # logs user in straight after registering
+        flash('A confirmation email has been sent via email.', 'success')
+
         # return redirect('list.html')
         return jsonify({"Success": "User created"})
 
@@ -176,6 +183,14 @@ def confirm_email(token):
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
     return redirect('/')
+
+@app.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.emailVerificationStatus:
+        return redirect('/')
+    flash(flash('Please confirm your account!', 'warning'))
+    return render_template('/unconfirmed.html')
 
 #route for logging out
 @app.route('/logout')

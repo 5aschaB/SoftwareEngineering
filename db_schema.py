@@ -114,6 +114,7 @@ class gitCommitsTable(db.Model):
     projectid = db.Column(db.Integer, db.ForeignKey('project_metrics_table.projectid'))
     timeframe = db.Column(db.Integer, db.ForeignKey('project_metrics_table.timeframe'))
     numOfCommits = db.Column(db.Integer)
+    repoName = db.Column(db.String(100))
 
 """ # put some data into the tables
 def dbinit():
