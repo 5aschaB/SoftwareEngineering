@@ -31,7 +31,10 @@ export const Sidebar = () => {
              <li> <DashboardIcon className="icon"/> <span>Dashboard</span></li>
                   </Link>
                  
+          <Link to="/project" style={{ textDecoration: "none" }}>
           <li><AssignmentOutlinedIcon className="icon" /><span>Projects</span></li>
+          </Link>
+
 
           <Link to="/chatbot" style={{ textDecoration: "none" }}>
               <li><ChatBubbleOutlineOutlinedIcon className="icon" /><span>Chatbot</span></li>
@@ -45,8 +48,13 @@ export const Sidebar = () => {
 
                   <p className="title">USER</p>
                   <li><SettingsOutlinedIcon className="icon"/><span>Settings</span></li>
-                  <li><AccountCircleOutlinedIcon className="icon"/><span>Profile</span></li>
-                  <li><LogoutIcon className="icon"/> <span>Logout</span></li>
+          <li><AccountCircleOutlinedIcon className="icon" /><span>Profile</span></li>
+          
+
+          <Link to="/login" style={{ textDecoration: "none" }}>
+            <li><LogoutIcon className="icon"/> <span>Logout</span></li>
+          </Link>
+              
                 </ul>
           </div>
 

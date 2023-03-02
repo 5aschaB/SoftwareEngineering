@@ -6,10 +6,8 @@ import { Widget } from '../../components/widget/Widget'
 import { Chart } from '../../components/chart/Chart'
 import Table from "../../components/table/Table";
 import "./home.scss"
-import ChatBot from 'react-simple-chatbot';
-
-import Survey from '../../components/survey/Survey'
-import { Segment } from 'semantic-ui-react'
+import Gantt from "../../components/gantt/Gantt";
+  
 
 const Home = () => {
 
@@ -27,11 +25,13 @@ const Home = () => {
         <div className="charts">
           <Featured />
           <Featured />
-          <Chart title="Project Progress"/>
+          {/* <Chart title="Project Progress" /> */}
+            <div className="listTitle"></div>
+          <Table />
+          {/* <Gantt> </Gantt> */}
         </div>
         <div className="listContainer">
-          <div className="listTitle">All Projects</div>
-          <Table/>
+           <Gantt > </Gantt>
         </div>
         </div>
       </div>
