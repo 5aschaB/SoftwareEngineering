@@ -1,5 +1,7 @@
 import subprocessClass
 import topologicalOrdering as topOrd
+import costCalculations
+import probabilities
 
 #Class for storing a cycle of subprocesses
 #cycleId is the ID of the cycle as stored in the database, as an integer
@@ -41,6 +43,15 @@ class Cycle:
 	def setSubprocessOrder(self,subprocesses):
 		self.subprocesses=subprocesses
 
+	def getCostGraph(self):
+		return self.costGraph
+
+	def getProbabilityGraph(self):
+		return self.probabilityGraph
+
+	def getFinishingGraph(self):
+		return self.finishGraph
+
 	#Given the cycle, checks that all of its subprocesses are valid. Returns True if it is, prints an error message and returns False if not
 	#Debug is a variable set for debugging the code. If debug=true, it will print an error message along with returning the False flag
 	def checkSubprocesses(self,debug):
@@ -51,7 +62,7 @@ class Cycle:
 			for i in self.subprocesses:
 				if (isinstance(i,subprocessClass.Subprocess)):
 					#If the probability graph of the subprocess is valid, add its ID to the list of all subprocesses in the cycle, if not, return False
-					if (subprocessClass.checkProbabilityGraph(i.getProbabilityGraph(),debug)):
+					if (probability.checkProbabilityGraph(i.getProbabilityGraph(),debug)):
 						subprocessIDs.append(i.getID())
 					else:
 						return False
@@ -95,3 +106,47 @@ class Cycle:
 				return False
 		#Topologically sorts the subprocesses so that a processes' predecessors occur before it, if possible
 		return topOrd.topologicalOrderingSubprocesses(self,debug)
+
+	#Works out the overall cost of a cycle based on the cost of the subprocesses within it
+	def calculateCosts(self):
+		#Sets the initial cost of the graph to the base cost of the cycle
+		sumCost={self.baseCost:1}
+		#Iterates through all of the subprocesses contained within the cycle, and adds the cost probabilities to the base cost
+		for i in self.subprocesses:
+			sumCost=costCalculations.addCost(sumCost,i.getBaseCost(),i.getCostPerTime(),i.getProbabilityGraph())
+		#Sets the overall cost of the cycle to be the calculation of the overall cost for 1 cycle considered alongside the probability graph for n number of cycles to occur
+		self.costGraph=costCalculations.cycleCosts(sumCost,self.repeatProbability)
+
+	#Calculates the expected duration of the cycle based on the subprocesses it contains
+	def calculateTimes(self):
+		#Iterates through all of the subprocesses within the cycle, setting each one's start time to the one calculated
+		for i in self.subprocesses:
+			i.setTimeGraph(probabilities.getStartTime(i,self.subprocesses))
+		#Determines which of its subprocesses are ending subprocesses (ie ones that do not have to occur before any others)
+		endingSubprocesses=probabilities.getFinalProcesses(self.subprocesses)
+		#Creates an arbitrary final subprocess with time 0, which relies on every other subprocess finishing, to determine the expected duration of the cycle
+		finalProcess=subprocessClass.Subprocess(-1,0,0,endingSubprocesses,{0:1})
+		#Calculates the expected duration of the cycle based on the expected duration of 1 cycle and the number of repeats the cycle is expected to take
+		self.probabilityGraph=costCalculations.cycleCosts(probabilities.getStartTime(finalProcess,self.subprocesses),self.repeatProbability)
+
+	#Sets the start time of the cycle to the one given, and then generates its finishing time based on its start time and expected duration
+	def setTimeGraph(self,startGraph):
+		self.startGraph=startGraph
+		self.finishGraph=costCalculations.addCost(startGraph,0,1,self.probabilityGraph)
+
+	#Given a list of all cycle ids that should be removed from its list of predecessors, removes them all,
+	#and generates such a list for all of the subprocesses contained within it
+	def removeUnnecessary(self,excessList):
+		#Determines a list of pairs of subprocesses within the cycle that can be removed due to being unnecessary
+		unnecessary=topOrd.unnecessaryRelation(self.subprocesses)
+		for i in self.subprocesses:
+			#Generates a list of all subprocess ids to be removed from the list of predecessors for that subprocess
+			toRemove=[]
+			for j in unnecessary:
+				if j[1]==i.getID():
+					toRemove.append(j[0])
+			#Removes all of the unnecessary predecessors from the subprocess's list of predecessors
+			i.removeUnnecessary(toRemove)
+		#Removes all of the unnecessary predecessors from the cycle's list of predecessors as given as input
+		for i in excessList:
+			self.predecessors.remove(i)
