@@ -63,3 +63,28 @@ def topologicalOrderingCycles(ganttChart, debug):
         if debug:
             print("Error: Set of predecessors forms a cycle, so no valid schedule exists\n")
         return False
+
+#Given a list of subprocesses, returns a list of pairs of subprocess ids that are unnecessary due to transitivity
+#Eg. process 1 must occur before process 2, and process 2 must occur before process 3, therefore process 1 must occur before process 3 by implication
+#This is important so that a) the algorithm runs more efficiently as it will consider less predecessors each time, and
+#b) the algorithm correctly identifies all parent and child subprocesses, and that this set is disjoint,
+#so that the algorithm does not generate 2 separate values for the same subprocess that may conflict by assuming them to be different subprocesses
+def unnecessaryRelation(subprocesses):
+    #Creates a directed graph where an edge exists to every subprocess from all of its predecessors
+    graph = networkx.DiGraph()
+    for i in subprocesses:
+        for j in i.getPredecessors():
+            graph.add_edge(j,i.getID())
+    unnecessary=[]
+    #For every predecessor relationship, determine if it is unnecessary and if so, add it to a list
+    for i in subprocesses:
+        for j in i.getPredecessors():
+            #Remove the edge from the directed graph in question
+            graph.remove_edge(j,i.getID())
+            #If there still exists a path between these 2 vertices, then the original edge must have been unnecessary
+            if i.getID() in networkx.descendants(graph,j):
+                unnecessary.append((j,i.getID()))
+            #If no path exists after the removal of the edge, add the edge back in to the graph to maintain the implication
+            else:
+                graph.add_edge(j,i.getID())
+    return unnecessary
