@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 # create the Flask app
-from flask import Flask, make_response, redirect, render_template, request, flash, jsonify, url_for
+from flask import Flask, make_response, redirect, render_template, request, flash, jsonify, url_for, Blueprint
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import text
@@ -43,6 +43,13 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(userid):
     return UserAccountTable.query.get(int(userid))
+
+app_blueprint = Blueprint('app',__name__)
+
+@app_blueprint.route('/')
+@app_blueprint.route('/app')
+def index():
+	return render_template("index.html")
 
 """ #route to the home
 @app.route('/')
