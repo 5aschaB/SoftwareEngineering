@@ -6,3 +6,5 @@ Sascha - Changed the risk metrics to be score from 1 to 10 instead of 1 to 5, to
 Sascha - The code completeness will be measured by tracking the number of commits to the user's repository. We report a  low score if they have < 5 commits
 after the first two weeks of the project or are below the average number of commits for all users on the project. We report a high score if they have doubled the number
 of commits from the previous check or are above average.
+
+Sascha - To measure code completeness/progress via Github, we are tracking commits, not bug/bug reports.
