@@ -165,7 +165,7 @@ def reconcileMetrics(startDate, projectDeadline, subprocessDuration, totalBudget
     reconciledMean = reconcileStats(metricSummaryStats, weightings)[0]        # stores weighted mean of all desired metrics
     reconciledStandardDev = reconcileStats(metricSummaryStats, weightings)[1] # stores weighted standard deviation of all desired metrics
 
-    probabilities = probabilityDict(subprocessDeadline, reconciledMean, reconciledStandardDev) # stores dictionary of cumulative probabilities as described in probabilityDict function
+    return (probabilityDict(subprocessDeadline, reconciledMean, reconciledStandardDev)) # stores dictionary of cumulative probabilities as described in probabilityDict function
 
 # Only pass to Gantt Chart if not complete yet
 # pass to ganttChart, subprocessClass and cycle
