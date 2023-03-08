@@ -16,6 +16,7 @@ def topologicalOrderingSubprocesses(cycle, debug):
     #Creates a directed graph, with the subprocesses as nodes, and edges existing from subprocess i to subprocess j if subprocess i is a predecessor of j
     graph = networkx.DiGraph()
     for i in cycle.getSubprocesses():
+        graph.add_node(i.getID())
         for j in i.getPredecessors():
             graph.add_edge(j,i.getID())
     #Determines if the graph is acyclic
@@ -43,6 +44,7 @@ def topologicalOrderingCycles(ganttChart, debug):
     #Creates a directed graph, with the cycles as nodes, and edges existing from cycle i to cycle j if cycle i is a predecessor of j
     graph = networkx.DiGraph()
     for i in ganttChart.getCycles():
+        graph.add_node(i.getID())
         for j in i.getPredecessors():
             graph.add_edge(j,i.getID())
     #Determines if the graph is acyclic
