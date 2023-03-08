@@ -67,7 +67,7 @@ class Cycle:
 					else:
 						return False
 					if ((isinstance(i.getMembersRequired(),int)) and (i.getMembersRequired()>0)):
-						if (((isinstance(i.getCostPerTime(),float)) or (isinstance(i.getCostPerTime(),intt))) and (i.getCostPerTime()>=0)) and (((isinstance(i.getBaseCost(),float)) or (isinstance(i.getBaseCost(),intt))) and (i.getBaseCost()>=0)):
+						if (((isinstance(i.getCostPerTime(),float)) or (isinstance(i.getCostPerTime(),int))) and (i.getCostPerTime()>=0)) and (((isinstance(i.getBaseCost(),float)) or (isinstance(i.getBaseCost(),int))) and (i.getBaseCost()>=0)):
 							pass
 						#If any costs are not floating point or integer numbers, or less than 0, return false
 						else:
