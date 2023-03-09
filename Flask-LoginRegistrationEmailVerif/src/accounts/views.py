@@ -12,6 +12,7 @@ from .forms import LoginForm, RegisterForm
 accounts_bp = Blueprint("accounts", __name__)
 
 
+# route that handles user registration
 @accounts_bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -24,6 +25,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        # make the verification token and send the email to the user
         token = generate_token(user.email)
         confirm_url = url_for("accounts.confirm_email", token=token, _external=True)
         html = render_template("accounts/confirm_email.html", confirm_url=confirm_url)
@@ -37,7 +39,7 @@ def register():
 
     return render_template("accounts/register.html", form=form)
 
-
+# route that handles user login
 @accounts_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -54,6 +56,8 @@ def login():
             return render_template("accounts/login.html", form=form)
     return render_template("accounts/login.html", form=form)
 
+
+# route that handles confirming the token from email verification
 @accounts_bp.route("/confirm/<token>")
 @login_required
 def confirm_email(token):
@@ -72,6 +76,7 @@ def confirm_email(token):
         flash("The confirmation link is invalid or has expired.", "danger")
     return redirect(url_for("core.home"))
 
+# route that handles resending the verification email if needed
 @accounts_bp.route("/resend")
 @login_required
 def resend_confirmation():
@@ -86,6 +91,7 @@ def resend_confirmation():
     flash("A new confirmation email has been sent.", "success")
     return redirect(url_for("accounts.inactive"))
 
+# route that checks if the user hasn't verified their account yet
 @accounts_bp.route("/inactive")
 @login_required
 def inactive():
@@ -93,7 +99,7 @@ def inactive():
         return redirect(url_for("core.home"))
     return render_template("accounts/inactive.html")
 
-
+# route that handles logging out
 @accounts_bp.route("/logout")
 @login_required
 def logout():

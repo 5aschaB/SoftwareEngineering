@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from src import bcrypt, db
 
 
+# a model of a user account for the database
 class UserAccountTable(UserMixin, db.Model):
     __tablename__='user_account_table'
     id = db.Column(db.Integer, primary_key=True)
@@ -26,7 +27,7 @@ class UserAccountTable(UserMixin, db.Model):
         self.is_admin = is_admin
 
 
-# a model of project metics for the database
+# a model of project metrics for the database
 class projectMetricsTable(db.Model):
     __tablename__='project_metrics_table'
     projectid = db.Column(db.Integer, primary_key=True)
@@ -102,6 +103,7 @@ class cyclePredecessorTable(db.Model):
     cycleBefore = db.Column(db.Integer, primary_key=True)
     cycleAfter = db.Column(db.Integer, primary_key=True)
 
+# a model of git commits for the database
 class gitCommitsTable(db.Model):
     __tablename__='git_commits_table'
     commitid = db.Column(db.Integer, primary_key=True)

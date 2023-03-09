@@ -5,11 +5,13 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 from src.accounts.models import UserAccountTable
 
 
+# Defines login form layout and restraints
 class LoginForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
 
 
+# Defines registration form layout and restraints
 class RegisterForm(FlaskForm):
     email = EmailField(
         "Email", validators=[DataRequired(), Email(message=None), Length(min=6, max=40)]
