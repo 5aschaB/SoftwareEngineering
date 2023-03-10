@@ -1,3 +1,5 @@
+# @Sam Malcolm
+
 #~#~# RECOMMENDATION AI #~#~#
 
 # Import modules #
@@ -21,12 +23,25 @@ import random as r
 # the AI can somewhat redirect the user and offer recommendations more pertinent to the current state of project metrics
 def recommend(priorities, userInput, seriousness, budget, alreadySpent, deadline, startDate, commits, wellbeing, morale, teamSize, startingTeamSize, absences):
     
-    metrics = ["deadline", "budget", "bugs", "teamSize", "morale", "wellbeing", "absences"]
+    metrics = ["deadline", "budget", "commits", "teamSize", "morale", "wellbeing", "absences"]
 
     # recommendation arrays will contain strings describing recommended actions to rectify issues which might be occurring
-    # these arrays will also become 2D, such that array[0] contains all recommendations relating to metrics[0], and so on
-    weakRecommendations = []   # will be made when risk matrix indicates a lower level of concern for the user-specified metric
-    strongRecommendations = [] # will be made when risk matrix indicates a higher level of concern for the user-specified metric
+    # these arrays will also become 2D, such that arr[0] contains all recommendations relating to metrics[0], and so on
+    weakRecommendations = [["Call a team meeting to address deadline concerns", "Incentivise prompt completion of tasks", "Consider whether each team member is working to their strengths"],
+                           ["Consider minor cutbacks of non-essential workplace items", "Notify management of your concerns", "Seek cheaper alternatives to office essentials"],
+                           ["Ensure familiarity of tracking software across the team", "Seek to identify the root cause of the slow work pacing", "Consider whether each team member is working to their strengths"],
+                           ["Prioritise the most critical parts of the team's work", "Communicate openly with the team about the challenges that a reduced team size will pose", "Consider re-allocating team members to best suit the needs of the team"],
+                           ["Make sure that good work is being recognised and rewarded", "Address team concerns and conflicts in a prompt manner", "Seek to provide opportunities for personal growth and development in the work environment"],
+                           ["Identify and address the root cause of the team's wellbeing issues", "Consider adjusting workload, or placing different team members on different tasks", "Be flexible in adjusting expectations to meet the team members' needs"],
+                           ["Look to temporarily re-allocate work", "Ensure the impact of the absences is properly assessed", "Train team members in one another's responsibilities to ensure they are as well serviced as possible during absences"]]   # will be made when risk matrix indicates a lower level of concern for the user-specified metric
+    
+    strongRecommendations = [["Consider re-evaluating your deadline", "Seek a deadline extension", "Re-evaluate which components of the project must be implemented prior to the current deadline"],
+                             ["Consider consulting a financial advisor", "Consult management for advice on alleviating budget concerns", "Consider reducing project scope"],
+                             ["Consider re-evaluating how much work should have been done at this stage", "Consider alternative working arrangements, such as more collaborative development", "Provide regular feedback and be honest with team on how the project is progressing"],
+                             ["Look to hire competent replacements", "Look to management to provide a temporary replacement", "Consider sending currrent team members on education courses to develop their skills"],
+                             ["Consider the work-life balance of the team", "Try providing team social events during standard work hours", "Consider giving the team time off in order to come back refreshed"],
+                             ["Consider giving the team time off work to overcome wellbeing issues", "Look into the possibility of counselling for either indivisual team members or the group", "Seek advice from a medical professional if necessary"],
+                             ["Seek a temporary replacement for the absentee(s)", "Look to work remotely if the absentee(s) feel capable of doing so", "Look to outsource the absentee's workload for the duration of their absence"]] # will be made when risk matrix indicates a higher level of concern for the user-specified metric
     
     riskMatrix = [] # will be formed of the respective scores from 1 to 10 of each metric in metrics
     
