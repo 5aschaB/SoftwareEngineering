@@ -8,11 +8,11 @@ registerLicense('ORg4AjUWIQA/Gnt2VVhkQlFacldJXnxLeEx0RWFab1p6d1NMYFlBNQtUQF1hSn5
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <DarkModeContextProvider>
     <App />
     </DarkModeContextProvider>
 
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 

@@ -11,6 +11,7 @@ import { projectData } from './data';
 const Ganttt = () => {
 
 
+ 
     const taskValues: TaskFieldsModel = {
     id: "TaskID",
     name: "TaskName",

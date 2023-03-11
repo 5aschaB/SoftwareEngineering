@@ -20,8 +20,9 @@ export const New = () => {
               </div>
 
                 <div className="bottom">
-                    <div className="left">
-              How happy are you working on your project 
+            <div className="left">
+              <h1>Well-being</h1>
+              Do you feel physically well enough to work on the project?
             </div>
             <br></br>
                     <div className="right">
@@ -36,8 +37,9 @@ export const New = () => {
 
 
            <div className="bottom">
-                    <div className="left">
-              How much does working on this project affect your personal time? 
+            <div className="left">
+              <h1>Team Size </h1>
+              Do you feel the team is understaffed?
             </div>
             <br></br>
                     <div className="right">
@@ -52,8 +54,9 @@ export const New = () => {
 
 
            <div className="bottom">
-                    <div className="left">
-              How stressed are you regarding this project? 
+            <div className="left">
+              <h1>Team Morale</h1>
+              Do you feel satisfied working on your team?
             </div>
             <br></br>
                     <div className="right">
@@ -62,25 +65,8 @@ export const New = () => {
                         </div>
             </div>
           </div>
-          
-
-
-
-
-           <div className="bottom">
-                    <div className="left">
-              How happy are you with your team?
-            </div>
-            <br></br>
-                    <div className="right">
-                        <div className="survey">
-                            <Survey/>
-                        </div>
-            </div>
-          </div>
-          
-
-
+        
+        
 
           </div>
     </div>

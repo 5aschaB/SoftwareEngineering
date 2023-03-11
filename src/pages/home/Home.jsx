@@ -1,5 +1,6 @@
 
 import { Featured } from '../../components/featured/Featured'
+import { Featured2 } from '../../components/featured2/Featured2'
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar'
 import { Widget } from '../../components/widget/Widget'
@@ -24,11 +25,10 @@ const Home = () => {
         </div>
         <div className="charts">
           <Featured />
-          <Featured />
+          <Featured2 />
           {/* <Chart title="Project Progress" /> */}
             <div className="listTitle"></div>
-          <Table />
-          {/* <Gantt> </Gantt> */}
+          {/* <Table /> */}
         </div>
         <div className="listContainer">
            <Gantt > </Gantt>
