@@ -1,0 +1,17 @@
+.project{
+
+
+    width: 100%;
+        display: flex;
+
+        .bottom{
+            position: absolute;
+                bottom: 20px;
+                color: grey;
+             
+        }
+
+        .projectContainer {
+            flex: 6;
+        }
+}
