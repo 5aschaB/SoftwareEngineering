@@ -65,9 +65,9 @@ def normaliseProbabilities(probabilityGraph):
 	#Adjust the probabilities in the probability graph so that the total sum will be 1
 	for i in probabilityGraph.keys():
 		probabilityGraph[i]=round((probabilityGraph[i]/totalProbabilities),6)
-	#Removes any 0 probability elements after normalisation
-	if probabilityGraph[i]==0:
-		del probabilityGraph[i]
+		#Removes any 0 probability elements after normalisation
+		if probabilityGraph[i]==0:
+			del probabilityGraph[i]
 	return probabilityGraph
 
 #Given 2 probability graphs, calculates the probability of each one finishing later than the other
