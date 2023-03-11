@@ -1,0 +1,19 @@
+Document any major changes/deviations from the design/requirements analysis here
+
+Sascha - To measure code completeness/progress via Github, we are tracking commits, not bug/bug reports.
+
+Sascha - Changed the risk metrics to be score from 1 to 10 instead of 1 to 5, to better reflect the survey results
+(since survey responses are 1 to 10) and the percentages supplied by the Gantt chart
+
+Sascha - The code completeness will be measured by tracking the number of commits to the user's repository. We report a  low score if they have < 5 commits
+after the first two weeks of the project or are below the average number of commits for all users on the project. We report a high score if they have doubled the number
+of commits from the previous check or are above average.
+
+Rishi - Taking confirmation token field in user table out as token doesn’t need to be stored - handled in flask file
+
+Rishi - Added field for time when email was verified in user table
+
+Rishi - Added table for tracking git commits
+
+Shehneela - Icon UI changes
+
